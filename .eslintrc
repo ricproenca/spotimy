@@ -1,0 +1,157 @@
+{
+  "env": {
+    "browser": true,
+    "commonjs": true,
+    "es6": true,
+    "jest": true,
+    "node": true
+  },
+  "extends": [
+    "eslint:recommended",
+    "plugin:import/recommended",
+    "plugin:react-hooks/recommended",
+    "plugin:react-redux/recommended",
+    "plugin:react/jsx-runtime",
+    "plugin:react/recommended",
+    "plugin:jsx-a11y/recommended",
+    "plugin:prettier/recommended",
+    "plugin:sonarjs/recommended",
+    "plugin:jest/recommended",
+    "plugin:jest/style",
+    "plugin:jest-dom/recommended",
+    "plugin:testing-library/react"
+  ],
+  "ignorePatterns": ["node_modules/*", "playground/*"],
+  "parser": "@babel/eslint-parser",
+  "parserOptions": {
+    "ecmaFeatures": {
+      "classes": true,
+      "experimentalObjectRestSpread": true,
+      "impliedStrict": true,
+      "jsx": true
+    },
+    "ecmaVersion": 8,
+    "requireConfigFile": false,
+    "sourceType": "module"
+  },
+  "plugins": [
+    "@babel",
+    "import",
+    "react",
+    "react-hooks",
+    "react-redux",
+    "jsx-a11y",
+    "prettier",
+    "jest",
+    "jest-dom",
+    "testing-library",
+    "sonarjs"
+  ],
+  "rules": {
+    "eol-last": "error",
+    "import/default": "off",
+    "import/no-named-as-default": "off",
+    "import/no-named-as-default-member": "off",
+    "import/order": [
+      "warn",
+      {
+        "alphabetize": {
+          "caseInsensitive": true,
+          "order": "asc"
+        },
+        "groups": ["builtin", "external", "internal", "parent", "sibling", "index", "object"],
+        "newlines-between": "always"
+      }
+    ],
+    "indent": ["error", 2],
+    "jsx-a11y/anchor-is-valid": "off",
+    "no-console": "warn",
+    "no-duplicate-imports": "warn",
+    "no-restricted-imports": [
+      "error",
+      {
+        "patterns": ["@/components/*", "@mui/*/*/*", "!@mui/material/test-utils/*"]
+      }
+    ],
+    "no-unused-vars": "warn",
+    "object-curly-spacing": ["warn", "always"],
+    "semi": "warn",
+    "sort-imports": [
+      "warn",
+      {
+        "ignoreCase": false,
+        "ignoreDeclarationSort": true,
+        "ignoreMemberSort": false
+      }
+    ],
+    "sort-keys": [
+      "warn",
+      "asc",
+      {
+        "caseSensitive": true,
+        "minKeys": 10,
+        "natural": false
+      }
+    ],
+    "quotes": ["warn", "single"],
+    "prettier/prettier": [
+      "error",
+      {
+        "endOfLine": "auto"
+      },
+      {
+        "usePrettierrc": true
+      }
+    ],
+    "react/jsx-filename-extension": [
+      "error",
+      {
+        "extensions": [".js", ".jsx", ".ts", ".tsx"]
+      }
+    ],
+    "react/jsx-indent": [
+      "error",
+      2,
+      {
+        "checkAttributes": true,
+        "indentLogicalExpressions": true
+      }
+    ],
+    "react/jsx-indent-props": ["error", 2],
+    "react/prop-types": "error",
+    "sonarjs/no-duplicate-string": ["error", 5]
+  },
+  "settings": {
+    "propWrapperFunctions": [
+      "forbidExtraProps",
+      {
+        "object": "Object",
+        "property": "freeze"
+      }
+    ],
+    "react": {
+      "createClass": "createReactClass",
+      "fragment": "Fragment",
+      "pragma": "React",
+      "version": "detect"
+    },
+    "import/resolver": {
+      "alias": [
+        ["@Api", "./src/api"],
+        ["@Assets", "./src/assets"],
+        ["@Components", "./src/components"],
+        ["@Config", "./src/config"],
+        ["@Hooks", "./src/hooks"],
+        ["@Layout", "./src/layout"],
+        ["@Pages", "./src/pages"],
+        ["@Providers", "./src/providers"],
+        ["@Routes", "./src/routes"],
+        ["@Services", "./src/services"],
+        ["@Store", "./src/store"],
+        ["@Templates", "./src/templates"],
+        ["@Tests", "./src/tests"],
+        ["@Utils", "./src/utils"]
+      ]
+    }
+  }
+}

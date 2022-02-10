@@ -21,3 +21,9 @@ Spotify Playlists Management App
   /test         - test utilities and mock server
   /utils        - shared utility functions
 ```
+
+## Please install the se packages globally
+
+```
+npm i -g http-server
+```

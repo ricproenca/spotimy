@@ -9,3 +9,4 @@ playground/
 *.iml
 .idea
 .vscode
+.env

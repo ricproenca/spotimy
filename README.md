@@ -1,8 +1,10 @@
 # spotimy
 
-Spotify Playlists Management App
+[![CircleCI](https://circleci.com/gh/ricproenca/spotimy/tree/main.svg?style=svg)](https://circleci.com/gh/ricproenca/spotimy/tree/main)
 
-## Project Structure
+## Spotify Playlists Management App
+
+### Project Structure
 
 ```text
 /src            - source code of the project
@@ -22,7 +24,7 @@ Spotify Playlists Management App
   /utils        - shared utility functions
 ```
 
-## Please install the se packages globally
+### Please install the se packages globally
 
 ```
 npm i -g http-server

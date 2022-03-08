@@ -12,9 +12,9 @@ import ErrorBoundaryFallbackStyles from './ErrorBoundaryFallback.styles';
  * @param {object|string} error - error to show
  * @param {Function} resetError - callback to reset the Error
  */
-const ErrorFallback = ({ error, resetError }) => {
+const ErrorBoundaryFallback = ({ error, resetError }) => {
   // eslint-disable-next-line no-console
-  console.log('ErrorFallback -> error', error.message);
+  console.log('ErrorBoundaryFallback -> error', error.message);
 
   const classes = ErrorBoundaryFallbackStyles();
 
@@ -37,7 +37,7 @@ const ErrorFallback = ({ error, resetError }) => {
   );
 };
 
-ErrorFallback.propTypes = {
+ErrorBoundaryFallback.propTypes = {
   /**
    * Error to show
    */
@@ -48,9 +48,9 @@ ErrorFallback.propTypes = {
   resetError: PropTypes.func
 };
 
-ErrorFallback.defaultProps = {
+ErrorBoundaryFallback.defaultProps = {
   error: '',
   resetError: reloadPage
 };
 
-export default ErrorFallback;
+export default ErrorBoundaryFallback;

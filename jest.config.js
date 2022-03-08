@@ -15,6 +15,7 @@ module.exports = async () => ({
     '@Pages/(.*)': '<rootDir>/src/pages/$1',
     '@Providers/(.*)': '<rootDir>/src/providers/$1',
     '@Routes/(.*)': '<rootDir>/src/routes/$1',
+    '@Schema/(.*)': '<rootDir>/src/schema/$1',
     '@Services/(.*)': '<rootDir>/src/services/$1',
     '@Store/(.*)': '<rootDir>/src/store/$1',
     '@Templates/(.*)': '<rootDir>/src/templates/$1',

@@ -98,6 +98,7 @@ module.exports = ({ mode } = { mode: 'production' }) => {
           '@Pages': paths.appCode.Pages,
           '@Providers': paths.appCode.Providers,
           '@Routes': paths.appCode.Routes,
+          '@Schema': paths.appCode.Schema,
           '@Services': paths.appCode.Services,
           '@Store': paths.appCode.Store,
           '@Templates': paths.appCode.Templates,

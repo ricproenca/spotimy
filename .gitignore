@@ -10,3 +10,4 @@ playground/
 .idea
 .vscode
 .env
+project.json

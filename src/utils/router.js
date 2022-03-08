@@ -1,4 +1,4 @@
-import { HOST } from '@Config/api';
+import { HOST } from '@Config/routes';
 
 /**
  * reloadPage

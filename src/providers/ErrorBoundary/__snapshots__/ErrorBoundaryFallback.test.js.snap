@@ -1,0 +1,24 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ErrorBoundaryFallback Testing rendering It matches snapshot 1`] = `
+<DocumentFragment>
+  <div
+    class="root MuiBox-root css-0"
+  >
+    <h2
+      data-testid="title"
+    >
+      Ooops, something went wrong
+    </h2>
+    <pre
+      data-testid="error-message"
+    />
+    <button
+      data-testid="try-again-button"
+    >
+      Try again
+    </button>
+    <pre />
+  </div>
+</DocumentFragment>
+`;

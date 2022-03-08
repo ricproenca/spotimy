@@ -19,6 +19,7 @@ const PATHS = {
     Pages: resolveApp('src/pages'),
     Providers: resolveApp('src/providers'),
     Routes: resolveApp('src/routes'),
+    Schema: resolveApp('src/schema'),
     Services: resolveApp('src/services'),
     Store: resolveApp('src/store/'),
     Templates: resolveApp('src/templates/'),

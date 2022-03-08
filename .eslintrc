@@ -146,6 +146,7 @@
         ["@Pages", "./src/pages"],
         ["@Providers", "./src/providers"],
         ["@Routes", "./src/routes"],
+        ["@Schema", "./src/schema"],
         ["@Services", "./src/services"],
         ["@Store", "./src/store"],
         ["@Templates", "./src/templates"],

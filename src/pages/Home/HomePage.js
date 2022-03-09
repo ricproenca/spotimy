@@ -1,4 +1,6 @@
 import React from 'react';
+
+import ThemeSwitch from '../../components/themeSwitch/ThemeSwitch';
 /**
  * Home Page
  *
@@ -6,11 +8,10 @@ import React from 'react';
  * - dashboard: in case of a valid session
  * - login: in case of a non valid session
  */
-const HomePage = ({ state, validSession }) => {
-  console.log(': HomePage -> state', state);
-  console.log(': HomePage -> validSession', validSession);
+const HomePage = () => {
   return (
     <>
+      <ThemeSwitch />
       <h2>Homepage</h2>
     </>
   );

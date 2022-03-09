@@ -7,7 +7,6 @@ import AppRoutes from '@Routes';
  * App
  */
 const App = () => {
-
   return (
     <React.StrictMode>
       <AppProvider>

@@ -18,14 +18,12 @@ const AppProvider = ({ children }) => {
   // Render
   return (
     <CustomThemeProvider>
-      <>
-        <CssBaseline />
-        <ErrorBoundary FallbackComponent={ErrorBoundaryFallback} onReset={() => undefined}>
-          <Suspense fallback={<SuspenseFallback />}>
-            <BrowserRouter>{children}</BrowserRouter>
-          </Suspense>
-        </ErrorBoundary>
-      </>
+      <ErrorBoundary FallbackComponent={ErrorBoundaryFallback} onReset={() => undefined}>
+        <Suspense fallback={<SuspenseFallback />}>
+          <CssBaseline />
+          <BrowserRouter>{children}</BrowserRouter>
+        </Suspense>
+      </ErrorBoundary>
     </CustomThemeProvider>
   );
 };

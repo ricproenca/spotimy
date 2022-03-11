@@ -11,3 +11,7 @@ export const DASHBOARD_ROUTE = '/dashboard';
 /**
  * Api Routes
  */
+const spotifyBaseRoute = 'http://localhost:5000';
+export const SPOTIFY_ME_ROUTE = `${spotifyBaseRoute}/api/v1/spotify/me`;
+export const SPOTIFY_LOGIN_ROUTE = `${spotifyBaseRoute}/api/v1/spotify/login`;
+export const SPOTIFY_REFRESH_ROUTE = `${spotifyBaseRoute}/api/v1/spotify/refresh`;

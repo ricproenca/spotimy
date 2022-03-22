@@ -4,6 +4,8 @@ import React, { useEffect } from 'react';
 import { SPOTIFY_ME_ROUTE } from '@Config/routes';
 import { getAccessToken } from '@Utils/spotify';
 
+import Header from "@Components/header/Header"
+
 /**
  * Dashboard page
  *
@@ -24,6 +26,7 @@ const DashboardPage = () => {
 
   return (
     <>
+      <Header />
       <h2>Dashboard Page</h2>
     </>
   );

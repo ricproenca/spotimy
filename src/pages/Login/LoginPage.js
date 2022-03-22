@@ -5,8 +5,9 @@ import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 
 import { HOME_ROUTE } from '@Config/routes';
+import { USER_ACCESS_TOKEN } from '@Config/storage';
 import { loginUserSchema } from '@Schema/user';
-import { LOCAL_USER_DATA, storage } from '@Utils/storage';
+import { storage } from '@Services/storage';
 
 const LoginPage = () => {
   const navigate = useNavigate();
@@ -32,9 +33,9 @@ const LoginPage = () => {
           withCredentials: true
         });
 
-        storage.setItem(LOCAL_USER_DATA, JSON.stringify(userData.data));
+        storage.setItem(USER_ACCESS_TOKEN, JSON.stringify(userData.data));
 
-        navigate(HOME_ROUTE, { replace: true, validSession: true });
+        navigate(HOME_ROUTE);
       }
     } catch (err) {
       setLoginError(err.message);

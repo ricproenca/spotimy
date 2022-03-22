@@ -1,6 +1,9 @@
 import React from 'react';
 
-import ThemeSwitch from '../../components/themeSwitch/ThemeSwitch';
+import { SPOTIFY_LOGIN_ROUTE } from '@Config/spotify';
+
+import useHomePageStyles from './HomePage.styles';
+
 /**
  * Home Page
  *
@@ -9,11 +12,12 @@ import ThemeSwitch from '../../components/themeSwitch/ThemeSwitch';
  * - login: in case of a non valid session
  */
 const HomePage = () => {
+  const classes = useHomePageStyles();
+
   return (
-    <>
-      <ThemeSwitch />
-      <h2>Homepage</h2>
-    </>
+    <div className={classes.login}>
+      <a href={SPOTIFY_LOGIN_ROUTE}>LOGIN WITH SPOTIFY</a>
+    </div>
   );
 };
 

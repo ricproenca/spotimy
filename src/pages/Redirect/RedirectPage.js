@@ -1,17 +1,25 @@
-import React from 'react';
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+
+import { DASHBOARD_ROUTE } from '@Config/routes';
+import useAuth from '@Services/spotify/useAuth';
 
 /**
  * Spotify redirect page
  *
- * Holds the logic to persist the token acquired from Spotify authentication
- * Redirects to the proper page
+ * Holds the logic to get spotify code from the url and redirects to the proper page
  */
 const RedirectPage = () => {
-  return (
-    <>
-      <h2>RedirectPage</h2>
-    </>
-  );
+  const navigate = useNavigate();
+  const accessToken = useAuth(new URLSearchParams(window.location.search).get('code'));
+
+  useEffect(() => {
+    if (accessToken) {
+      navigate(DASHBOARD_ROUTE);
+    }
+  });
+
+  return null;
 };
 
 export default RedirectPage;

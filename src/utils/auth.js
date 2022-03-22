@@ -1,3 +1,4 @@
-import { LOCAL_USER_DATA, storage } from '@Utils/storage';
+import { USER_ACCESS_TOKEN } from '@Config/storage';
+import { storage } from '@Services/storage';
 
-export const getCurrentUser = () => storage.getItem(LOCAL_USER_DATA);
+export const getCurrentUser = () => storage.getItem(USER_ACCESS_TOKEN);

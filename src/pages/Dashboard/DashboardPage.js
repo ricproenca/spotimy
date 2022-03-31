@@ -5,15 +5,11 @@ import Header from "@Components/header/Header"
 import useSpotify from "@Services/Spotify/useSpotify";
 import { useSpotifyContextState, useSpotifyContextUpdater } from '@Providers/Spotify';
 
-import Checkbox from '@mui/material/Checkbox';
-import TextField from '@mui/material/TextField';
-import Autocomplete, { createFilterOptions } from '@mui/material/Autocomplete';
-import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
-import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import { DataGrid, GridToolbar } from '@mui/x-data-grid';
 
 import { millisecondsToTime } from '@Utils/time'
 
+import CheckboxGroup from "./CheckboxGroup/CheckboxGroup"
 /**
  * Dashboard page
  */
@@ -22,18 +18,65 @@ const DashboardPage = () => {
   const { saveArtists, saveGenres, saveTracks } = useSpotifyContextUpdater();
   const { artists, genres, tracks } = useSpotifyContextState()
 
+  const [artistsSelected, setSelectedArtists] = useState([]);
+  const [genresSelected, setSelectedGenres] = useState([]);
   const [tracksSelected, setSelectedTracks] = useState([]);
 
   const [loading, setLoading] = useState(true);
 
 
+  const mapGenresToCheckboxes = (genres) => {
+    const checkboxes = [];
+
+    genres.map((genre) => {
+      checkboxes.push({
+        value: genre,
+        label: genre,
+        checked: false
+      })
+    })
+
+    return checkboxes;
+  };
+
+  const isGenreChecked = (genresMap, genre) => {
+    let isChecked = false;
+
+    genresMap.map((g) => {
+      if (genre === g.value && g.checked) {
+        isChecked = true
+      }
+    })
+
+    return isChecked;
+  }
+
+  const filterTracksByGenres = (tracks, genresMap) => {
+    const tracksToSelect = [];
+
+    tracks.map(track => {
+      let alreadyAdded = false;
+      track.genres.map((trackGenre) => {
+        if (!alreadyAdded && isGenreChecked(genresMap, trackGenre)) {
+          tracksToSelect.push(track)
+          alreadyAdded = true;
+        }
+      })
+    })
+
+    console.log('filterTracksByGenres tracksToSelect: ', tracksToSelect);
+    return tracksToSelect;
+  }
+
   useEffect(() => {
     const initSpotifyData = async () => {
+      console.log('#1');
       const { artists, genres, tracks } = await spotifyApi.initSpotify();
 
       saveArtists(artists.items);
       saveGenres(genres.items);
       saveTracks(tracks.items);
+      console.log('tracks.items: ', tracks.items);
     }
 
     initSpotifyData().catch(console.error);
@@ -41,14 +84,25 @@ const DashboardPage = () => {
 
   useEffect(() => {
     if (artists.length && genres.length && tracks.length) {
+      console.log('#2');
       setLoading(false);
-      setSelectedTracks(tracks);
-      // console.log("artists", artists)
-      console.log("genres", genres)
-      console.log(genres.join(","))
-      // console.log('tracks', tracks)
+
+      const genresAsCheckboxes = mapGenresToCheckboxes(genres);
+      setSelectedGenres(genresAsCheckboxes);
+
+      const filteredTracks = filterTracksByGenres(tracks, genresAsCheckboxes)
+      setSelectedTracks(filteredTracks);
+
+      setSelectedArtists(artists);
     }
    }, [artists, genres, tracks]);
+
+  const handleCheckboxGenres = (genresMap) => {
+    setSelectedGenres(genresMap)
+
+    const filteredTracks = filterTracksByGenres(tracks, genresMap)
+    setSelectedTracks(filteredTracks);
+  };
 
   const columns = [
     { field: 'id', headerName: 'ID', flex: 1 },
@@ -60,7 +114,7 @@ const DashboardPage = () => {
     { field: 'albumImg', headerName: 'albumImg', flex: 1},
     {
       field: 'genres', headerName: 'Genres', flex: 2,
-      valueFormatter: ({ value }) => value.length ? genres.join(", ") : "N/A"
+      valueFormatter: ({ value }) => value.length ? value.join(", ") : "N/A"
     },
     {
       field: 'duration', headerName: 'duration', headerAlign: 'right', align: 'right',
@@ -68,65 +122,19 @@ const DashboardPage = () => {
     },
   ];
 
-  const hasGenre = (genres, genreFilter) => genres.indexOf(genreFilter) >= 0
+  if (!artists.length, !genres.length || !tracks.length) {
+    return null
+  }
 
-  const onChange = (event, genresSelected) => {
-    if (!genresSelected.length) {
-      setSelectedTracks(tracks);
-      return;
-    }
-
-    const tracksSelected = [];
-    tracks.map((t) => {
-      let alreadyAdded = false;
-      t.genres.map((tg) => {
-        if (hasGenre(genresSelected, tg) && !alreadyAdded) {
-          tracksSelected.push(t);
-          alreadyAdded = true;
-        }
-      })
-    })
-
-    setSelectedTracks(tracksSelected);
-  };
-
-
-  const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
-
-  const checkedIcon = <CheckBoxIcon fontSize="small" />;
-
-  const renderOption = (props, option, { selected }) => (
-    <li {...props}>
-      <Checkbox
-        icon={icon}
-        checkedIcon={checkedIcon}
-        style={{ marginRight: 8 }}
-        checked={selected}
-      />
-      {option}
-    </li>
-  );
-
-  const renderInput = (params) => (<TextField {...params} label="Choose your genres" placeholder="Genres" />);
-
-  const filterOptions = createFilterOptions({ matchFrom: 'any', trim: true });
+  console.log('tracksSelected', tracksSelected);
 
   return (
     <>
       <Header />
       <div>
-        <Autocomplete
-          multiple
-          id="checkboxes-tags-demo"
-          options={genres}
-          // disableCloseOnSelect
-          // getOptionLabel={(option) => option.title}
-          renderOption={renderOption}
-          filterOptions={filterOptions}
-          style={{ width: 800 }}
-          renderInput={renderInput}
-          onChange={onChange}
-          disabled={loading}
+        <CheckboxGroup
+          checkboxes={genresSelected}
+          onCheckboxGroupChange={handleCheckboxGenres}
         />
       </div>
       <div style={{ height: 700, width: '100%' }}>

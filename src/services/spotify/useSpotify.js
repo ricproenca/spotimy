@@ -2,7 +2,7 @@ import { createHash } from '@Utils/crypto';
 import { getAccessToken } from '@Utils/spotify';
 import SpotifyWebApi from 'spotify-web-api-js';
 
-import { invalidGenres } from './invalidGenres';
+import invalidGenres from './invalidGenres';
 
 const spotifyApi = new SpotifyWebApi();
 const accessToken = getAccessToken();
@@ -18,6 +18,18 @@ const createHashFromArrayProperty = (arr = [], prop = 'id') => {
   return createHash(arrayHash);
 };
 
+const getValidGenres = genres => {
+  const validGenres = [];
+
+  genres.map(genre => {
+    if (invalidGenres.indexOf(genre) < 0) {
+      validGenres.push(genre);
+    }
+  });
+
+  return validGenres;
+};
+
 const useSpotify = () => {
   const initSpotify = async () => {
     try {
@@ -29,7 +41,7 @@ const useSpotify = () => {
        * GET TRACKS
        */
 
-      let totalSavedTracks = 50; //Number.MAX_SAFE_INTEGER;
+      let totalSavedTracks = Number.MAX_SAFE_INTEGER;
       let offsetCalled = 0;
 
       while (tracksFound.length < totalSavedTracks) {
@@ -61,7 +73,7 @@ const useSpotify = () => {
           }
         });
 
-        // totalSavedTracks = tracksData.total;
+        totalSavedTracks = tracksData.total;
         offsetCalled += tracksData.limit;
 
         /**
@@ -73,7 +85,7 @@ const useSpotify = () => {
             artistsFound.push({
               id: artist.id,
               name: artist.name,
-              genres: artist.genres,
+              genres: getValidGenres(artist.genres),
               images: artist.images[0].url
             });
           });
@@ -94,7 +106,9 @@ const useSpotify = () => {
        */
       artistsFound.map(({ genres }) => {
         genres.map(genre => {
-          if (genresFound.indexOf(genre) < 0 && invalidGenres.indexOf(genre) < 0) {
+          const isGenreAlreadyFound = genresFound.indexOf(genre) < 0;
+          const isGenreInvalid = invalidGenres.indexOf(genre) < 0;
+          if (isGenreAlreadyFound && isGenreInvalid) {
             genresFound.push(genre);
           }
         });
@@ -109,7 +123,6 @@ const useSpotify = () => {
       /**
        * BUILD HASHES
        */
-
       const tracksHash = createHashFromArrayProperty(tracksFound);
       const artistsHash = createHashFromArrayProperty(artistsFound);
       const genresHash = createHashFromArrayProperty(genresFound);

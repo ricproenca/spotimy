@@ -9,6 +9,7 @@ import CustomThemeProvider from '@Providers/Theme';
 
 import ErrorBoundaryFallback from './ErrorBoundary';
 import SuspenseFallback from './Suspense';
+import { SpotifyContextProvider } from './Spotify';
 
 /**
  * Wrapper for all App providers.
@@ -21,7 +22,9 @@ const AppProvider = ({ children }) => {
       <ErrorBoundary FallbackComponent={ErrorBoundaryFallback} onReset={() => undefined}>
         <Suspense fallback={<SuspenseFallback />}>
           <CssBaseline />
-          <BrowserRouter>{children}</BrowserRouter>
+          <SpotifyContextProvider>
+            <BrowserRouter>{children}</BrowserRouter>
+          </SpotifyContextProvider>
         </Suspense>
       </ErrorBoundary>
     </CustomThemeProvider>

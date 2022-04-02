@@ -39,17 +39,30 @@ const SpotifyContextProvider = ({ children }) => {
   const [tracks, setTracks] = useState([]);
   const [artists, setArtists] = useState([]);
   const [genres, setGenres] = useState([]);
+  const [playlists, setPlaylists] = useState([]);
 
   const getTracks = useCallback(() => tracks, []);
   const getArtists = useCallback(() => artists, []);
   const getGenres = useCallback(() => genres, []);
+  const getPlaylists = useCallback(() => playlists, []);
 
   const saveTracks = useCallback(newTracks => setTracks(newTracks), []);
   const saveArtists = useCallback(newArtists => setArtists(newArtists), []);
   const saveGenres = useCallback(newGenres => setGenres(newGenres), []);
+  const savePlaylists = useCallback(newPlaylists => setPlaylists(newPlaylists), []);
 
-  const stateValues = { tracks, artists, genres }
-  const updaterValues = { getArtists, getGenres, getTracks, saveArtists, saveGenres, saveTracks }
+  const stateValues = { tracks, artists, genres, playlists }
+
+  const updaterValues = {
+    getArtists,
+    getGenres,
+    getTracks,
+    getPlaylists,
+    saveArtists,
+    saveGenres,
+    saveTracks,
+    savePlaylists
+  }
 
   return (
     <SpotifyContextState.Provider value={stateValues}>

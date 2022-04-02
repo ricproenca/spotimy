@@ -36,6 +36,7 @@ const useSpotify = () => {
       let tracksFound = [];
       let artistsFound = [];
       let genresFound = [];
+      let playlistsFound = [];
 
       /**
        * GET TRACKS
@@ -73,7 +74,9 @@ const useSpotify = () => {
           }
         });
 
-        totalSavedTracks = tracksData.total;
+        if (totalSavedTracks === Number.MAX_SAFE_INTEGER) {
+          totalSavedTracks = tracksData.total;
+        }
         offsetCalled += tracksData.limit;
 
         /**
@@ -82,10 +85,20 @@ const useSpotify = () => {
         if (artistsIdsArray.length) {
           const artistsData = await spotifyApi.getArtists(artistsIdsArray.sort());
           artistsData.artists.map(artist => {
+            if (!artist.genres.length) {
+              artist.genres = ['N/A'];
+            }
+
+            let validGenres = getValidGenres(artist.genres);
+            if (!validGenres.length) {
+              validGenres = ['N/A'];
+              console.warn(`${artist.name} does not have genres.`);
+            }
+
             artistsFound.push({
               id: artist.id,
               name: artist.name,
-              genres: getValidGenres(artist.genres),
+              genres: validGenres,
               images: artist.images[0].url
             });
           });
@@ -116,6 +129,22 @@ const useSpotify = () => {
       genresFound.sort();
 
       /**
+       * GET PLAYLISTS
+       */
+      const playlistsData = await spotifyApi.getUserPlaylists();
+      playlistsData.items.map(pl => {
+        const newPlaylist = {
+          id: pl.id,
+          name: pl.name,
+          description: pl.description,
+          total: pl.tracks.total,
+          playlistImg: pl.images[0]?.url || '',
+          snapshotId: pl.snapshot_id
+        };
+        playlistsFound.push(newPlaylist);
+      });
+
+      /**
        * PUT GENRES INTO TRACKS
        */
       tracksFound.forEach(t => (t.genres = artistsFound.find(a => a.id === t.artistId).genres));
@@ -126,6 +155,7 @@ const useSpotify = () => {
       const tracksHash = createHashFromArrayProperty(tracksFound);
       const artistsHash = createHashFromArrayProperty(artistsFound);
       const genresHash = createHashFromArrayProperty(genresFound);
+      const playlistsHash = createHashFromArrayProperty(playlistsFound);
 
       return {
         tracks: {
@@ -139,6 +169,10 @@ const useSpotify = () => {
         genres: {
           id: genresHash.toString(),
           items: genresFound
+        },
+        playlists: {
+          id: playlistsHash.toString(),
+          items: playlistsFound
         }
       };
     } catch (err) {
@@ -147,8 +181,26 @@ const useSpotify = () => {
     }
   };
 
+  const addItemsToPlaylist = async (playlist, tracks) => {
+    tracks.pop();
+    tracks.pop();
+    tracks.pop();
+
+    console.log('tracks: ', tracks.length);
+
+    try {
+      const playlistUpdated = await spotifyApi.addTracksToPlaylist(playlist, tracks);
+      console.log('playlistUpdated: ', playlistUpdated);
+      return `Playlist ${name} created.`;
+    } catch (err) {
+      console.log(err);
+      return err;
+    }
+  };
+
   return {
-    initSpotify
+    initSpotify,
+    addItemsToPlaylist
   };
 };
 

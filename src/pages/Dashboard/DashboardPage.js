@@ -10,20 +10,19 @@ import { DataGrid, GridToolbar } from '@mui/x-data-grid';
 import { millisecondsToTime } from '@Utils/time'
 
 import CheckboxGroup from "./CheckboxGroup/CheckboxGroup"
+import CreatePlaylistForm from "./createPlaylistForm/CreatePlaylistForm";
+
 /**
  * Dashboard page
  */
 const DashboardPage = () => {
   const spotifyApi = useSpotify();
-  const { saveArtists, saveGenres, saveTracks } = useSpotifyContextUpdater();
-  const { artists, genres, tracks } = useSpotifyContextState()
+  const { saveArtists, saveGenres, saveTracks, savePlaylists } = useSpotifyContextUpdater();
+  const { artists, genres, tracks, playlists } = useSpotifyContextState()
 
   const [artistsSelected, setSelectedArtists] = useState([]);
   const [genresSelected, setSelectedGenres] = useState([]);
   const [tracksSelected, setSelectedTracks] = useState([]);
-
-  const [loading, setLoading] = useState(true);
-
 
   const mapGenresToCheckboxes = (genres) => {
     const checkboxes = [];
@@ -64,29 +63,23 @@ const DashboardPage = () => {
       })
     })
 
-    console.log('filterTracksByGenres tracksToSelect: ', tracksToSelect);
     return tracksToSelect;
   }
 
   useEffect(() => {
     const initSpotifyData = async () => {
-      console.log('#1');
-      const { artists, genres, tracks } = await spotifyApi.initSpotify();
-
+      const { artists, genres, tracks, playlists } = await spotifyApi.initSpotify();
       saveArtists(artists.items);
       saveGenres(genres.items);
       saveTracks(tracks.items);
-      console.log('tracks.items: ', tracks.items);
+      savePlaylists(playlists.items)
     }
 
     initSpotifyData().catch(console.error);
   }, []);
 
   useEffect(() => {
-    if (artists.length && genres.length && tracks.length) {
-      console.log('#2');
-      setLoading(false);
-
+    if (artists.length && genres.length && tracks.length && playlists.length) {
       const genresAsCheckboxes = mapGenresToCheckboxes(genres);
       setSelectedGenres(genresAsCheckboxes);
 
@@ -95,7 +88,7 @@ const DashboardPage = () => {
 
       setSelectedArtists(artists);
     }
-   }, [artists, genres, tracks]);
+   }, [artists, genres, tracks, playlists]);
 
   const handleCheckboxGenres = (genresMap) => {
     setSelectedGenres(genresMap)
@@ -122,22 +115,25 @@ const DashboardPage = () => {
     },
   ];
 
-  if (!artists.length, !genres.length || !tracks.length) {
+  if (!artists.length, !genres.length || !tracks.length || !playlists.length) {
     return null
   }
 
   console.log('tracksSelected', tracksSelected);
+  console.log('playlists', playlists);
 
   return (
     <>
       <Header />
-      <div>
-        <CheckboxGroup
-          checkboxes={genresSelected}
-          onCheckboxGroupChange={handleCheckboxGenres}
-        />
-      </div>
-      <div style={{ height: 700, width: '100%' }}>
+
+      <CheckboxGroup
+        checkboxes={genresSelected}
+        onCheckboxGroupChange={handleCheckboxGenres}
+      />
+
+      <CreatePlaylistForm playlists={playlists} tracks={tracksSelected}   />
+
+      <div style={{ height: 700, width: '100%', paddingTop: '40px' }}>
         <div style={{ display: 'flex', height: '100%' }}>
           <div style={{ flexGrow: 1 }}>
             <DataGrid

@@ -1,8 +1,7 @@
-import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-
 import { DASHBOARD_ROUTE } from '@Config/routes';
 import useAuth from '@Services/spotify/useAuth';
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 /**
  * Spotify redirect page

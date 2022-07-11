@@ -1,10 +1,9 @@
+import { SPOTIFY_LOGIN_ROUTE, SPOTIFY_REFRESH_ROUTE } from '@Config/routes';
+import { saveAccessToken, saveExpireTime, saveRefreshToken } from '@Utils/spotify';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 
-import { SPOTIFY_LOGIN_ROUTE, SPOTIFY_REFRESH_ROUTE } from '@Config/routes';
-import { saveAccessToken, saveExpireTime, saveRefreshToken } from '@Utils/spotify';
-
-export default function useAuth(code) {
+const useAuth = code => {
   const [accessToken, setAccessToken] = useState();
   const [refreshToken, setRefreshToken] = useState();
   const [expiresIn, setExpiresIn] = useState();
@@ -42,4 +41,6 @@ export default function useAuth(code) {
   }, [refreshToken, expiresIn]);
 
   return accessToken;
-}
+};
+
+export default useAuth;

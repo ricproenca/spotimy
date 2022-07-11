@@ -5,7 +5,7 @@ import React, { Suspense } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
 import { BrowserRouter } from 'react-router-dom';
 
-import CustomThemeProvider from '@Providers/Theme';
+import CustomThemeProvider from '@Providers/Theme/CustomThemeProvider';
 
 import ErrorBoundaryFallback from './ErrorBoundary';
 import SuspenseFallback from './Suspense';

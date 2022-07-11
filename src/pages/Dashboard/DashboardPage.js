@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { useEffect } from 'react';
 
+import Appbar from '@Components/appBar/AppBar';
 import { SPOTIFY_ME_ROUTE } from '@Config/routes';
 import { getAccessToken } from '@Utils/spotify';
 
@@ -24,6 +25,7 @@ const DashboardPage = () => {
 
   return (
     <>
+      <Appbar />
       <h2>Dashboard Page</h2>
     </>
   );

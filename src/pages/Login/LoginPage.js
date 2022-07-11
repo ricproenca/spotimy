@@ -2,16 +2,13 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import axios from 'axios';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
 
-import { HOME_ROUTE } from '@Config/routes';
+import { SPOTIFY_LOGIN_ROUTE } from '@Config/spotify';
 import { USER_ACCESS_TOKEN } from '@Config/storage';
 import { loginUserSchema } from '@Schema/user';
 import { storage } from '@Services/storage';
 
 const LoginPage = () => {
-  const navigate = useNavigate();
-
   const [loginError, setLoginError] = useState();
 
   const {
@@ -35,7 +32,7 @@ const LoginPage = () => {
 
         storage.setItem(USER_ACCESS_TOKEN, JSON.stringify(userData.data));
 
-        navigate(HOME_ROUTE);
+        window.location.assign(SPOTIFY_LOGIN_ROUTE);
       }
     } catch (err) {
       setLoginError(err.message);
